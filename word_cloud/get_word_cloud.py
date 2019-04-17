@@ -9,7 +9,7 @@ import random
 
 
 #loading the characters dataset to a dictionary
-with open("data_extraction/characters.json") as f:
+with open("data/characters.json") as f:
     data = json.load(f)
 
 #selecting only the name of characters
@@ -26,7 +26,7 @@ characters_name.remove('lady')
 characters_name.remove('ros') 
 
 #loading the scripts
-episode_script = np.load('scripts_processing/processed_scripts.npy').item()
+episode_script = np.load('data/processed_scripts.npy').item()
 
 #tokenizing all the text
 words = []
