@@ -8,10 +8,10 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 #loading the scripts
-episode_script = np.load('scripts_processing/processed_scripts.npy').item()
+episode_script = np.load('data/processed_scripts.npy').item()
 
 #loading the characters dataset to a dictionary
-with open("story_locations/locations.json") as f:
+with open("data/locations.json") as f:
     data = json.load(f)
 
 #selecting only the name fo characters
