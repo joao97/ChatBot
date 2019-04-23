@@ -47,38 +47,23 @@ for episode, script in episode_script.items():
 
 counter = pd.DataFrame(counter, columns = ['season','location','count'])
 
-counter['season'] = counter['season'].str[0:2]
-counter['season'] = 'Season '+counter['season'].str[-1]
-counter['location'] = counter['location'].str.title()
+counter = pd.DataFrame(counter, columns = ['season','location','count'])
 
-top10 = counter[['location','count']].groupby(['location']).sum().reset_index().sort_values(by=['count'], ascending=False).head(5)
 
-counter = counter[counter['location'].isin(top10['location'].values)]
-counter = counter.groupby(['season','location']).sum().reset_index()  
-
-for season in counter['season'].unique():
-    counter.loc[counter['season']==season,'count'] = counter.loc[counter['season']==season,'count'] / np.sum(counter.loc[counter['season']==season,'count'])
+top5 = pd.DataFrame(counter.groupby('location').count().sort_values('count')['count'].tail(5))
 
 
 
-matrix=[]
-for i in range(len(counter['season'].unique())):
-    line = []
-    for c in range(len(counter['location'].unique())):
-        try:
-            line.append(counter.loc[(counter['season']==counter['season'].unique()[i]) & (counter['location']==counter['location'].unique()[c]) , 'count'].values[0])
-        except:
-            line.append(0)
-    matrix.append(line)
 
-matrix = pd.DataFrame(matrix, columns = counter['location'].unique(), index = counter['season'].unique())
+fig , ax= plt.subplots()
+plt.bar(top5.index, top5['count'], color='white')
+plt.xlabel('Locations', color='white')
+plt.ylabel('Frequency', color='white')
+ax.spines['bottom'].set_color('white')
+ax.spines['top'].set_color('white') 
+ax.spines['right'].set_color('white')
+ax.spines['left'].set_color('white')
+ax.tick_params(axis='x', colors='white')
+ax.tick_params(axis='y', colors='white')
 
-
-plt.style.use('dark_background')
-ax = matrix.plot(kind='barh', stacked=True)
-ax.set_facecolor((0,0,0))
-ax.get_xaxis().set_visible(False)
-ax.legend(loc='upper center', bbox_to_anchor=(0.5, 0),
-          ncol=3, fancybox=True, shadow=True)
-ax.set_title('Location Distribution by Season')
-
+fig.savefig('location_exploration.png', transparent=True)
